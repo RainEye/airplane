@@ -24,7 +24,7 @@ public class AI {
 				.iterator();
 		while (bulletsIterator.hasNext()) {
 			Bullet localBullet = bulletsIterator.next();
-			if (localBullet.getY() <= 0) {
+			if (localBullet.getY() > 0) {
 				Iterator<Enemy> enemiesIterator = enemiesList.iterator();
 				while (enemiesIterator.hasNext()) {
 					Enemy localEnemy = enemiesIterator.next();
@@ -60,12 +60,17 @@ public class AI {
 	}
 
 	public static boolean isHit(Bullet paramBullet, Enemy paramEnemy) {
-		int i = paramBullet.getX();
-		int j = paramBullet.getY();
-		int k = paramEnemy.getX();
-		int m = paramEnemy.getY();
-		int n = paramEnemy.getWidth();
-		int i1 = paramEnemy.getHeight();
-		return (i > k) && (i < k + n) && (j <= m + i1);
+		int bulletX = paramBullet.getX();
+		int bulletY = paramBullet.getY();
+		int enemyX = paramEnemy.getX();
+		int enemyY = paramEnemy.getY();
+		int enemyWidth = paramEnemy.getWidth();
+		int enemyHeight = paramEnemy.getHeight();
+		if (bulletX >= enemyX && bulletX <= enemyX + enemyWidth
+				&& (bulletY <= enemyY + enemyHeight)) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 }
