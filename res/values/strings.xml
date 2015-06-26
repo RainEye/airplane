@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Airplane</string>
+    <string name="startGame">开始游戏</string>
+    <string name="endGame">退出游戏</string>
+    <string name="title_activity_game">GameActivity</string>
+    <string name="gameOver">gameOver</string>
+    <string name="title_activity_game_over">GameOverActivity</string>
+	<string name="score">分数</string>
+</resources>
