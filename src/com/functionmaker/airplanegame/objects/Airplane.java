@@ -29,25 +29,6 @@ public class Airplane {// 飞机类
 		this.y = y;
 		this.isExist = true;
 		this.bullets = new ArrayList<Bullet>();
-		new Thread() {
-			@Override
-			public void run() {
-				while (isExist) {
-					try {
-						Bullet bullet = new Bullet(Airplane.this.bulletBitmap,
-								Airplane.this.width, Airplane.this.height,
-								Airplane.this.x + Airplane.this.width / 2
-										- Airplane.this.bulletWidth / 2,
-								Airplane.this.y - Airplane.this.bulletHeight);
-						Airplane.this.bullets.add(bullet);
-						Thread.sleep(500);
-
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
-			}
-		}.start();
 	}
 
 	public Bitmap getAirplaneBitmap() {
@@ -97,5 +78,14 @@ public class Airplane {// 飞机类
 
 	public List<Bullet> getBullets() {
 		return this.bullets;
+	}
+	public Bullet produceBullet(){
+		Bullet bullet = new Bullet(Airplane.this.bulletBitmap,
+				Airplane.this.width, Airplane.this.height,
+				Airplane.this.x + Airplane.this.width / 2
+						- Airplane.this.bulletWidth / 2,
+				Airplane.this.y - Airplane.this.bulletHeight);
+		Airplane.this.bullets.add(bullet);
+		return bullet;
 	}
 }

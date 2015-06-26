@@ -7,6 +7,6 @@
     <SurfaceView
         android:id="@+id/gameSurfaceView"
         android:layout_width="fill_parent"
-        android:layour_height="fill_parent" />
+        android:layout_height="fill_parent" />
 
 </LinearLayout>
