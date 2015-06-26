@@ -26,6 +26,7 @@ import android.widget.TextView;
 import com.functionmaker.airplanegame.R;
 import com.functionmaker.airplanegame.objects.Airplane;
 import com.functionmaker.airplanegame.objects.Enemy;
+import com.functionmaker.airplanegame.threads.GameMainThread;
 import com.functionmaker.airplanegame.util.ConstValues;
 import com.functionmaker.airplanegame.util.WindowSize;
 
@@ -92,7 +93,7 @@ public class GameActivity extends Activity {
 		enemies = new ArrayList<Enemy>();
 		exitDialog = new Dialog(GameActivity.this);
 		exitDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-		exitDialog.setContentView(R.layout.exist_dialog_layout);
+		exitDialog.setContentView(R.layout.exit_game_dialog);
 		TextView okTextView = (TextView) exitDialog
 				.findViewById(R.id.okTextView);
 		TextView cancelTextView = (TextView) exitDialog
@@ -121,7 +122,7 @@ public class GameActivity extends Activity {
 		@Override
 		public void surfaceCreated(SurfaceHolder holder) {
 			gameMainThread = new GameMainThread(holder, airplane, enemies,
-					GameActivity.this, windowSize,handler);
+					GameActivity.this, windowSize, handler);
 			gameMainThread.start();
 		}
 
