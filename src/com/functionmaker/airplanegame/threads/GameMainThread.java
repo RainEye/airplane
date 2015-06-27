@@ -32,6 +32,7 @@ public class GameMainThread extends Thread {
 	private boolean isGameContinue;
 	private boolean isGamePause;
 	private WindowSize windowSize;
+	private int enemyProducePeriod;
 
 	public GameMainThread(SurfaceHolder paramSurfaceHolder,
 			Airplane paramAirplane, List<Enemy> paramList,
@@ -43,6 +44,7 @@ public class GameMainThread extends Thread {
 		this.windowSize = paramWindowSize;
 		this.context = paramContext;
 		this.handler = paramHandler;
+		this.enemyProducePeriod = 60;
 		this.explosionBitmap = BitmapFactory.decodeResource(
 				paramContext.getResources(), R.drawable.explosion);
 		this.enemyBitmap = BitmapFactory.decodeResource(
@@ -66,7 +68,7 @@ public class GameMainThread extends Thread {
 					bulletsCount = 0;
 				}
 				bulletsCount++;
-				if (enemyCount == 60) {
+				if (enemyCount == enemyProducePeriod) {
 					produceEnemies();
 					enemyCount = 0;
 				}
@@ -79,10 +81,28 @@ public class GameMainThread extends Thread {
 				DrawTool.drawBullet(localCanvas, localPaint, this.airplane);
 				AI.destroyDeal(this.airplane, this.enemies, localCanvas,
 						localPaint, this.explosionBitmap);
-				localCanvas
-						.drawText(context.getResources().getString(R.string.score) + AI.score, 20.0F, 20.0F, localPaint);
+				switch (AI.score) {
+				case 1000:
+					AI.level = 2;
+					enemyProducePeriod = 30;
+					break;
+				case 2000:
+					AI.level = 3;
+					enemyProducePeriod = 15;
+				case 3000:
+					AI.level =4;
+					enemyProducePeriod = 10;
+				default:
+					break;
+				}
+				localCanvas.drawText(
+						context.getResources().getString(R.string.score)
+								+ AI.score, 20.0F, 20.0F, localPaint);
+				localCanvas.drawText(
+						context.getResources().getString(R.string.level)
+								+ AI.level, 20.0F, 50.0F, localPaint);
 				AI.isGameOver(this.enemies, this.airplane, this.windowSize,
-						this.handler,context);
+						this.handler, context);
 				this.holder.unlockCanvasAndPost(localCanvas);
 			}
 		}

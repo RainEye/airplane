@@ -13,4 +13,6 @@
 	<string name="highestScore">历史最高分</string>
 	<string name="highestScoreIs">最高分为:</string>
 	<string name="restartGame">重新开始</string>
+	<string name="nextLevel">恭喜进入下一关</string>
+	<string name="level">关卡:</string>
 </resources>

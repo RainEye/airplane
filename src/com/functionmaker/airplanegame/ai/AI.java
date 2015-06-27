@@ -19,7 +19,7 @@ import com.functionmaker.airplanegame.util.WindowSize;
 
 public class AI {
 	public static int score = 0;
-
+	public static int level=1;
 	public static void destroyDeal(Airplane paramAirplane,
 			List<Enemy> enemiesList, Canvas paramCanvas, Paint paramPaint,
 			Bitmap paramBitmap) {

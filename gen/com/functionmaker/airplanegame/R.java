@@ -1822,6 +1822,8 @@ containing a value of this type.
         public static final int gameOver=0x7f0a0014;
         public static final int highestScore=0x7f0a0019;
         public static final int highestScoreIs=0x7f0a001a;
+        public static final int level=0x7f0a001d;
+        public static final int nextLevel=0x7f0a001c;
         public static final int ok=0x7f0a0017;
         public static final int restartGame=0x7f0a001b;
         public static final int score=0x7f0a0016;
