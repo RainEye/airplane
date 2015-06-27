@@ -5,11 +5,12 @@
     <string name="startGame">开始游戏</string>
     <string name="endGame">退出游戏</string>
     <string name="title_activity_game">GameActivity</string>
-    <string name="gameOver">Game Over</string>
+    <string name="gameOver">游戏结束</string>
     <string name="title_activity_game_over">GameOverActivity</string>
 	<string name="score">分数:</string>
 	<string name="ok">确定</string>
 	<string name="cancel">取消</string>
 	<string name="highestScore">历史最高分</string>
 	<string name="highestScoreIs">最高分为:</string>
+	<string name="restartGame">重新开始</string>
 </resources>
