@@ -61,13 +61,13 @@ public class GameActivity extends Activity {
 	protected void onPause() {
 		super.onPause();
 		gameMainThread.setGamePause();
-		AI.savaHighestScore(this);
+		AI.saveHighestScore(this);
 	}
 
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		AI.savaHighestScore(this);
+		AI.saveHighestScore(this);
 	}
 
 	@Override
@@ -206,7 +206,7 @@ public class GameActivity extends Activity {
 		public void onClick(View v) {
 			switch (v.getId()) {
 			case R.id.okTextView:
-				AI.savaHighestScore(GameActivity.this);
+				AI.saveHighestScore(GameActivity.this);
 				GameActivity.this.finish();
 				System.exit(0);
 				break;

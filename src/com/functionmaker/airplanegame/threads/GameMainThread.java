@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Random;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -37,6 +38,8 @@ public class GameMainThread extends Thread {
 	private int enemyProducePeriod;
 	private MediaPlayer bgmMediaPlayer;
 	private MediaPlayer explosionMediaPlayer;
+	private boolean isBGMOpen;
+	private boolean isGameMusicOpen;
 
 	public GameMainThread(SurfaceHolder paramSurfaceHolder,
 			Airplane paramAirplane, List<Enemy> paramList,
@@ -48,36 +51,16 @@ public class GameMainThread extends Thread {
 		this.windowSize = paramWindowSize;
 		this.context = paramContext;
 		this.handler = paramHandler;
-		this.enemyBitmaps = new Bitmap[ConstValues.NUM_OF_ENEMIES];
-		this.enemyProducePeriod = 60;
-		this.bgmMediaPlayer = MediaPlayer.create(paramContext, R.raw.bgm);
-		this.explosionMediaPlayer = MediaPlayer.create(context,
-				R.raw.explosion_sound);
-		try {
-			bgmMediaPlayer.setLooping(true);
-			bgmMediaPlayer.prepare();
-			explosionMediaPlayer.setLooping(false);
-			explosionMediaPlayer.prepare();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		this.explosionBitmap = BitmapFactory.decodeResource(
-				paramContext.getResources(), R.drawable.explosion);
-		this.enemyBitmaps[0] = BitmapFactory.decodeResource(
-				paramContext.getResources(), R.drawable.enemy_a);
-		this.enemyBitmaps[1] = BitmapFactory.decodeResource(
-				paramContext.getResources(), R.drawable.enemy_b);
-		this.enemyBitmaps[2] = BitmapFactory.decodeResource(
-				paramContext.getResources(), R.drawable.enemy_c);
-		this.enemyBitmaps[3] = BitmapFactory.decodeResource(
-				paramContext.getResources(), R.drawable.enemy_d);
-		this.enemyWidth = this.enemyBitmaps[0].getWidth();
-		this.enemyHeight = this.enemyBitmaps[0].getHeight();
 		this.isGameContinue = true;
+		initMediaPlayer();
+		initBitmap();
+		initMusicState();
 	}
 
 	public void run() {
-		bgmMediaPlayer.start();
+		if (isBGMOpen) {
+			bgmMediaPlayer.start();
+		}
 		Paint localPaint = new Paint();
 		localPaint.setAntiAlias(true);
 		localPaint.setTextSize(20.0F);
@@ -104,7 +87,7 @@ public class GameMainThread extends Thread {
 				DrawTool.drawBullet(localCanvas, localPaint, this.airplane);
 				AI.destroyDeal(this.airplane, this.enemies, localCanvas,
 						localPaint, this.explosionBitmap,
-						this.explosionMediaPlayer);
+						this.explosionMediaPlayer, isGameMusicOpen);
 				switch (AI.score) {
 				case 1000:
 					AI.level = 2;
@@ -160,5 +143,43 @@ public class GameMainThread extends Thread {
 	public void resumeGame() {
 		this.isGamePause = false;
 		bgmMediaPlayer.start();
+	}
+
+	public void initMediaPlayer() {
+		this.bgmMediaPlayer = MediaPlayer.create(context, R.raw.bgm);
+		this.explosionMediaPlayer = MediaPlayer.create(context,
+				R.raw.explosion_sound);
+		try {
+			bgmMediaPlayer.setLooping(true);
+			bgmMediaPlayer.prepare();
+			explosionMediaPlayer.setLooping(false);
+			explosionMediaPlayer.prepare();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void initBitmap() {
+		this.enemyBitmaps = new Bitmap[ConstValues.NUM_OF_ENEMIES];
+		this.enemyProducePeriod = 60;
+		this.explosionBitmap = BitmapFactory.decodeResource(
+				context.getResources(), R.drawable.explosion);
+		this.enemyBitmaps[0] = BitmapFactory.decodeResource(
+				context.getResources(), R.drawable.enemy_a);
+		this.enemyBitmaps[1] = BitmapFactory.decodeResource(
+				context.getResources(), R.drawable.enemy_b);
+		this.enemyBitmaps[2] = BitmapFactory.decodeResource(
+				context.getResources(), R.drawable.enemy_c);
+		this.enemyBitmaps[3] = BitmapFactory.decodeResource(
+				context.getResources(), R.drawable.enemy_d);
+		this.enemyWidth = this.enemyBitmaps[0].getWidth();
+		this.enemyHeight = this.enemyBitmaps[0].getHeight();
+	}
+
+	public void initMusicState() {
+		SharedPreferences sharedPreferences = context.getSharedPreferences(
+				"setting", Context.MODE_PRIVATE);
+		isBGMOpen = sharedPreferences.getBoolean("bgmState", false);
+		isGameMusicOpen = sharedPreferences.getBoolean("gameMusicState", false);
 	}
 }

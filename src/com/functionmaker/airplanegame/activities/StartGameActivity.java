@@ -18,6 +18,7 @@ public class StartGameActivity extends Activity {
 	private Button startGameButton;
 	private Button endGameButton;
 	private Button highestScoreButton;
+	private Button gameSettingButton;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -29,9 +30,11 @@ public class StartGameActivity extends Activity {
 		startGameButton = (Button) findViewById(R.id.startGame);
 		highestScoreButton = (Button) findViewById(R.id.hightestScore);
 		endGameButton = (Button) findViewById(R.id.endGame);
+		gameSettingButton = (Button) findViewById(R.id.gameSetting);
 		startGameButton.setOnClickListener(new MyOnClickListener());
 		endGameButton.setOnClickListener(new MyOnClickListener());
 		highestScoreButton.setOnClickListener(new MyOnClickListener());
+		gameSettingButton.setOnClickListener(new MyOnClickListener());
 	}
 
 	private class MyOnClickListener implements OnClickListener {
@@ -59,8 +62,12 @@ public class StartGameActivity extends Activity {
 				StartGameActivity.this.finish();
 				System.exit(0);
 				break;
+			case R.id.gameSetting:
+				Intent gameSettingIntent = new Intent(StartGameActivity.this,
+						GameSettingActivity.class);
+				startActivity(gameSettingIntent);
+				break;
 			}
 		}
-
 	}
 }

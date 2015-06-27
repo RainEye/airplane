@@ -24,7 +24,8 @@ public class AI {
 
 	public static void destroyDeal(Airplane paramAirplane,
 			List<Enemy> enemiesList, Canvas paramCanvas, Paint paramPaint,
-			Bitmap paramBitmap, MediaPlayer explosionMediaPlayer) {
+			Bitmap paramBitmap, MediaPlayer explosionMediaPlayer,
+			boolean isGameMusicOpen) {
 		Iterator<Bullet> bulletsIterator = paramAirplane.getBullets()
 				.iterator();
 		while (bulletsIterator.hasNext()) {
@@ -40,7 +41,9 @@ public class AI {
 							paramCanvas.drawBitmap(paramBitmap,
 									localBullet.getX(), localBullet.getY(),
 									paramPaint);
-							explosionMediaPlayer.start();
+							if (isGameMusicOpen) {
+								explosionMediaPlayer.start();
+							}
 							score += 10;
 
 						} catch (Exception e) {
@@ -60,7 +63,7 @@ public class AI {
 		while (enemiesIterator.hasNext()) {
 			Enemy enemy = enemiesIterator.next();
 			if (enemy.getY() >= paramWindowSize.getHeight()) {
-				savaHighestScore(context);
+				saveHighestScore(context);
 				paramHandler.sendEmptyMessage(ConstValues.GAME_OVER_MSG);
 			}
 		}
@@ -81,7 +84,7 @@ public class AI {
 		}
 	}
 
-	public static void savaHighestScore(Context context) {
+	public static void saveHighestScore(Context context) {
 		SharedPreferences sharedPreferences = context.getSharedPreferences(
 				"score_record", Context.MODE_PRIVATE);
 		Editor editor = sharedPreferences.edit();
