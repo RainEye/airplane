@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.media.MediaPlayer;
 import android.os.Handler;
 import android.view.SurfaceHolder;
 
@@ -16,6 +17,7 @@ import com.functionmaker.airplanegame.R;
 import com.functionmaker.airplanegame.ai.AI;
 import com.functionmaker.airplanegame.objects.Airplane;
 import com.functionmaker.airplanegame.objects.Enemy;
+import com.functionmaker.airplanegame.util.ConstValues;
 import com.functionmaker.airplanegame.util.DrawTool;
 import com.functionmaker.airplanegame.util.WindowSize;
 
@@ -23,7 +25,7 @@ public class GameMainThread extends Thread {
 	private Airplane airplane;
 	private Context context;
 	private List<Enemy> enemies;
-	private Bitmap enemyBitmap;
+	private Bitmap[] enemyBitmaps;
 	private int enemyHeight;
 	private int enemyWidth;
 	private Bitmap explosionBitmap;
@@ -33,6 +35,8 @@ public class GameMainThread extends Thread {
 	private boolean isGamePause;
 	private WindowSize windowSize;
 	private int enemyProducePeriod;
+	private MediaPlayer bgmMediaPlayer;
+	private MediaPlayer explosionMediaPlayer;
 
 	public GameMainThread(SurfaceHolder paramSurfaceHolder,
 			Airplane paramAirplane, List<Enemy> paramList,
@@ -44,17 +48,36 @@ public class GameMainThread extends Thread {
 		this.windowSize = paramWindowSize;
 		this.context = paramContext;
 		this.handler = paramHandler;
+		this.enemyBitmaps = new Bitmap[ConstValues.NUM_OF_ENEMIES];
 		this.enemyProducePeriod = 60;
+		this.bgmMediaPlayer = MediaPlayer.create(paramContext, R.raw.bgm);
+		this.explosionMediaPlayer = MediaPlayer.create(context,
+				R.raw.explosion_sound);
+		try {
+			bgmMediaPlayer.setLooping(true);
+			bgmMediaPlayer.prepare();
+			explosionMediaPlayer.setLooping(false);
+			explosionMediaPlayer.prepare();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		this.explosionBitmap = BitmapFactory.decodeResource(
 				paramContext.getResources(), R.drawable.explosion);
-		this.enemyBitmap = BitmapFactory.decodeResource(
-				paramContext.getResources(), R.drawable.enemy);
-		this.enemyWidth = this.enemyBitmap.getWidth();
-		this.enemyHeight = this.enemyBitmap.getHeight();
+		this.enemyBitmaps[0] = BitmapFactory.decodeResource(
+				paramContext.getResources(), R.drawable.enemy_a);
+		this.enemyBitmaps[1] = BitmapFactory.decodeResource(
+				paramContext.getResources(), R.drawable.enemy_b);
+		this.enemyBitmaps[2] = BitmapFactory.decodeResource(
+				paramContext.getResources(), R.drawable.enemy_c);
+		this.enemyBitmaps[3] = BitmapFactory.decodeResource(
+				paramContext.getResources(), R.drawable.enemy_d);
+		this.enemyWidth = this.enemyBitmaps[0].getWidth();
+		this.enemyHeight = this.enemyBitmaps[0].getHeight();
 		this.isGameContinue = true;
 	}
 
 	public void run() {
+		bgmMediaPlayer.start();
 		Paint localPaint = new Paint();
 		localPaint.setAntiAlias(true);
 		localPaint.setTextSize(20.0F);
@@ -80,7 +103,8 @@ public class GameMainThread extends Thread {
 						this.windowSize);
 				DrawTool.drawBullet(localCanvas, localPaint, this.airplane);
 				AI.destroyDeal(this.airplane, this.enemies, localCanvas,
-						localPaint, this.explosionBitmap);
+						localPaint, this.explosionBitmap,
+						this.explosionMediaPlayer);
 				switch (AI.score) {
 				case 1000:
 					AI.level = 2;
@@ -89,9 +113,11 @@ public class GameMainThread extends Thread {
 				case 2000:
 					AI.level = 3;
 					enemyProducePeriod = 15;
+					break;
 				case 3000:
-					AI.level =4;
+					AI.level = 4;
 					enemyProducePeriod = 10;
+					break;
 				default:
 					break;
 				}
@@ -110,10 +136,12 @@ public class GameMainThread extends Thread {
 
 	public void setGamePause() {
 		this.isGamePause = true;
+		bgmMediaPlayer.pause();
 	}
 
 	public void exitGame() {
 		this.isGameContinue = false;
+		bgmMediaPlayer.stop();
 	}
 
 	public boolean getGameState() {
@@ -121,13 +149,16 @@ public class GameMainThread extends Thread {
 	}
 
 	public void produceEnemies() {
-		Enemy localEnemy = new Enemy(this.enemyBitmap, this.enemyWidth,
-				this.enemyHeight, new Random().nextInt(this.windowSize
-						.getWidth() - this.enemyWidth), 0);
+		int chooseEnemy = new Random().nextInt(ConstValues.NUM_OF_ENEMIES - 1);
+		Enemy localEnemy = new Enemy(this.enemyBitmaps[chooseEnemy],
+				this.enemyWidth, this.enemyHeight,
+				new Random().nextInt(this.windowSize.getWidth()
+						- this.enemyWidth), 0);
 		this.enemies.add(localEnemy);
 	}
 
 	public void resumeGame() {
 		this.isGamePause = false;
+		bgmMediaPlayer.start();
 	}
 }

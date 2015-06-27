@@ -9,6 +9,7 @@ import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.media.MediaPlayer;
 import android.os.Handler;
 
 import com.functionmaker.airplanegame.objects.Airplane;
@@ -19,10 +20,11 @@ import com.functionmaker.airplanegame.util.WindowSize;
 
 public class AI {
 	public static int score = 0;
-	public static int level=1;
+	public static int level = 1;
+
 	public static void destroyDeal(Airplane paramAirplane,
 			List<Enemy> enemiesList, Canvas paramCanvas, Paint paramPaint,
-			Bitmap paramBitmap) {
+			Bitmap paramBitmap, MediaPlayer explosionMediaPlayer) {
 		Iterator<Bullet> bulletsIterator = paramAirplane.getBullets()
 				.iterator();
 		while (bulletsIterator.hasNext()) {
@@ -38,6 +40,7 @@ public class AI {
 							paramCanvas.drawBitmap(paramBitmap,
 									localBullet.getX(), localBullet.getY(),
 									paramPaint);
+							explosionMediaPlayer.start();
 							score += 10;
 
 						} catch (Exception e) {
