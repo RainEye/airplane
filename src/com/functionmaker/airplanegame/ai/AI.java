@@ -3,6 +3,9 @@ package com.functionmaker.airplanegame.ai;
 import java.util.Iterator;
 import java.util.List;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -49,11 +52,12 @@ public class AI {
 
 	public static void isGameOver(List<Enemy> enemiesList,
 			Airplane paramAirplane, WindowSize paramWindowSize,
-			Handler paramHandler) {
+			Handler paramHandler, Context context) {
 		Iterator<Enemy> enemiesIterator = enemiesList.iterator();
 		while (enemiesIterator.hasNext()) {
 			Enemy enemy = enemiesIterator.next();
 			if (enemy.getY() >= paramWindowSize.getHeight()) {
+				savaHighestScore(context);
 				paramHandler.sendEmptyMessage(ConstValues.GAME_OVER_MSG);
 			}
 		}
@@ -71,6 +75,17 @@ public class AI {
 			return true;
 		} else {
 			return false;
+		}
+	}
+
+	public static void savaHighestScore(Context context) {
+		SharedPreferences sharedPreferences = context.getSharedPreferences(
+				"score_record", Context.MODE_PRIVATE);
+		Editor editor = sharedPreferences.edit();
+		int highestSocre = sharedPreferences.getInt("highestScore", 0);
+		if (score > highestSocre) {
+			editor.putInt("highestScore", score);
+			editor.commit();
 		}
 	}
 }

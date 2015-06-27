@@ -1658,10 +1658,11 @@ containing a value of this type.
         public static final int dropdown=0x7f09001a;
         public static final int edit_query=0x7f090033;
         public static final int end=0x7f09001c;
-        public static final int endGame=0x7f090043;
+        public static final int endGame=0x7f090044;
         public static final int expand_activities_button=0x7f090022;
         public static final int expanded_menu=0x7f090028;
         public static final int gameSurfaceView=0x7f09003f;
+        public static final int hightestScore=0x7f090043;
         public static final int home=0x7f090000;
         public static final int homeAsUp=0x7f09000e;
         public static final int icon=0x7f090026;
@@ -1817,6 +1818,8 @@ containing a value of this type.
         public static final int cancel=0x7f0a0018;
         public static final int endGame=0x7f0a0012;
         public static final int gameOver=0x7f0a0014;
+        public static final int highestScore=0x7f0a0019;
+        public static final int highestScoreIs=0x7f0a001a;
         public static final int ok=0x7f0a0017;
         public static final int score=0x7f0a0016;
         public static final int startGame=0x7f0a0011;

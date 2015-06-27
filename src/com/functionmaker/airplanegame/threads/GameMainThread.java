@@ -80,9 +80,9 @@ public class GameMainThread extends Thread {
 				AI.destroyDeal(this.airplane, this.enemies, localCanvas,
 						localPaint, this.explosionBitmap);
 				localCanvas
-						.drawText("·ÖÊý:" + AI.score, 20.0F, 20.0F, localPaint);
+						.drawText(context.getResources().getString(R.string.score) + AI.score, 20.0F, 20.0F, localPaint);
 				AI.isGameOver(this.enemies, this.airplane, this.windowSize,
-						this.handler);
+						this.handler,context);
 				this.holder.unlockCanvasAndPost(localCanvas);
 			}
 		}

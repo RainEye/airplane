@@ -364,10 +364,11 @@ int id disableHome 0x7f09000d
 int id dropdown 0x7f09001a
 int id edit_query 0x7f090033
 int id end 0x7f09001c
-int id endGame 0x7f090043
+int id endGame 0x7f090044
 int id expand_activities_button 0x7f090022
 int id expanded_menu 0x7f090028
 int id gameSurfaceView 0x7f09003f
+int id hightestScore 0x7f090043
 int id home 0x7f090000
 int id homeAsUp 0x7f09000e
 int id icon 0x7f090026
@@ -455,6 +456,8 @@ int string app_name 0x7f0a0010
 int string cancel 0x7f0a0018
 int string endGame 0x7f0a0012
 int string gameOver 0x7f0a0014
+int string highestScore 0x7f0a0019
+int string highestScoreIs 0x7f0a001a
 int string ok 0x7f0a0017
 int string score 0x7f0a0016
 int string startGame 0x7f0a0011

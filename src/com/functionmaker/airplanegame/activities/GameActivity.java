@@ -24,6 +24,7 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.functionmaker.airplanegame.R;
+import com.functionmaker.airplanegame.ai.AI;
 import com.functionmaker.airplanegame.objects.Airplane;
 import com.functionmaker.airplanegame.objects.Enemy;
 import com.functionmaker.airplanegame.threads.GameMainThread;
@@ -60,6 +61,13 @@ public class GameActivity extends Activity {
 	protected void onPause() {
 		super.onPause();
 		gameMainThread.setGamePause();
+		AI.savaHighestScore(this);
+	}
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		AI.savaHighestScore(this);
 	}
 
 	@Override
@@ -198,6 +206,7 @@ public class GameActivity extends Activity {
 		public void onClick(View v) {
 			switch (v.getId()) {
 			case R.id.okTextView:
+				AI.savaHighestScore(GameActivity.this);
 				GameActivity.this.finish();
 				System.exit(0);
 				break;
